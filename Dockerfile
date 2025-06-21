@@ -1,11 +1,14 @@
-# Usa una imagen con Apache + PHP
 FROM php:8.2-apache
 
-# Copia tu proyecto al directorio del servidor web
-COPY . /var/www/html/
+# Instala extensiones necesarias
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Activa el módulo de reescritura de URLs (opcional si usas .htaccess)
+# Habilita mod_rewrite si usas .htaccess
 RUN a2enmod rewrite
 
-# Cambia los permisos del directorio (opcional)
+# Copia los archivos del proyecto
+RUN docker-php-ext-install mysqli
+COPY . /var/www/html/
+
+# Ajusta permisos
 RUN chown -R www-data:www-data /var/www/html
